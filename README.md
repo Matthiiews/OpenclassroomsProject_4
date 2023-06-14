@@ -90,11 +90,11 @@ _Dernier rapport exporté :_
 
 #### 2.2 Rapports
 1. Tous les joueurs
-   1.1 Classer par nom
-   1.2 Classer par rang
+   1. Classer par nom
+   2. Classer par rang
 2. Tous les joueurs d'un tournoi
-   2.1 Classer par nom
-   2.2 Classer par rang
+   1. Classer par nom
+   2. Classer par rang
 3. Tous les tournois
 4. Toutes les rondes d'un tournoi
 5. Tous les matchs d'un tournoi
