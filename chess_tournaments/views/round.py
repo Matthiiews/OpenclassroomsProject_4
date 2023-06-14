@@ -6,7 +6,7 @@ from prettytable import PrettyTable
 
 
 class RoundViews:
-    """ Define a class Round Views """
+    """ Define a class for views related to round """
     def __init__(self):
         self.table = PrettyTable()
         self.round_field_names = [
@@ -30,7 +30,8 @@ class RoundViews:
     def display_matches(self, matches):
         """ Display matches for current round as table
 
-        @param matches: list of matches tuples
+        Args:
+            matches: list of matches tuples
         """
         self.table.clear()
         self.table.field_names = self.round_field_names
@@ -47,7 +48,8 @@ class RoundViews:
     def display_results(self, t):
         """ Display results at the end of the tournament
 
-        @param t: current tournament
+        Args:
+            t (object): current tournament object
         """
         self.table.clear()
         self.table.field_names = self.results_field_names
@@ -70,8 +72,9 @@ class RoundViews:
     def round_header(t, start_time):
         """ Display tournament info as a round header
 
-        @param t: current tournament
-        @param start_time: tournament start time (str)
+        Args
+            t (object): Current tournament object
+            start_time(str): tournament start time 
         """
         print("\n\n")
 

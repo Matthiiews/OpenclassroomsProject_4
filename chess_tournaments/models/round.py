@@ -4,13 +4,13 @@
 class Round:
     """ Define a class Round Models """
     def __init__(self, round_name: str, start_datetime: str, end_time: str):
-        """ Intilialisation of the round name, dtart date time and end time. """
+        """ Intilialisation of the round name, start date time and end time. """
         self.round_name = round_name
         self.start_datetime = start_datetime
         self.end_time = end_time
         self.matches = []
 
-    def get_round(self):
+    def get_round_info(self):
         """ Return round info as list """
         return [
             self.round_name,
@@ -19,8 +19,13 @@ class Round:
             self.matches
         ]
 
+    def add_match(self, match):
+        """ Add a match to the round """
+        self.matches.append(match)
+
+    """
     def get_match_pairing(self, player_1, player_2):
-        """ Set match paring as tuple """
+        ''' Set match paring as tuple '''
         match = (
             f"{player_1['last_name']}, {player_1['first_name']}",
             player_1["rank"],
@@ -30,3 +35,4 @@ class Round:
             player_2["score"]
         )
         self.matches.append(match)
+    """
