@@ -107,7 +107,7 @@ class MenuController:
     def input_time_control(self):
         """Select time control for new tournament.
 
-        ARGS:
+        Args:
             return: time control (str)
         """
         self.menu_view.time_control_options()
@@ -129,7 +129,7 @@ class MenuController:
     def select_players(self, players_total):
         """Select players for new tournament.
 
-        ARGS:
+        Args:
             players_total: number of players (int).
             return: list of selected players.
         """
@@ -326,7 +326,7 @@ class MenuController:
     def player_reports_sorting(self, players):
         """Select sorting option (name or rank) for players.
 
-        ARGS:
+        Args:
             param players: list of players.
         """
         self.menu_view.reports_player_sorting()

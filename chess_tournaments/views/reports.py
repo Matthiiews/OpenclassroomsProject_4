@@ -137,7 +137,7 @@ class Reports:
     def report_header(info):
         """Header for tournament reports.
 
-        ARGS:
+        Args:
             info: tournament (dict).
         """
         print("\n\n")

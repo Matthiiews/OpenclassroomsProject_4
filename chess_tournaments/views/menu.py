@@ -39,7 +39,7 @@ class MenuViews:
     def review_tournament(info, players):
         """Display all input info to review before saving to database.
 
-        ARGS:
+        Args:
             info: input info list.
             players: list of selected players.
         """
@@ -71,7 +71,7 @@ class MenuViews:
     def select_players(players, player_number):
         """Display all players to select.
 
-        ARGS:
+        Args:
             players: list of players.
             player_number: number of current player for new tournament (if editing player == "").
         """
@@ -88,7 +88,7 @@ class MenuViews:
     def select_tournament(tournaments):
         """Display all tournaments to select.
 
-        ARGS:
+        Args:
             tournaments: tournaments list.
         """
         print("\n" * 3 + "--- SELECT TOURNAMENT ---\n")
@@ -112,7 +112,7 @@ class MenuViews:
     def review_player(info):
         """Display all input info to review before saving to database.
 
-        ARGS:
+        Args:
             info: player info list.
         """
         print("\n\nNew player created :\n")
@@ -126,7 +126,7 @@ class MenuViews:
     def update_player_info(player, options):
         """Player info editing prompts.
 
-        ARGS:
+        Args:
             player: currently edited player
             options: editable options
         """

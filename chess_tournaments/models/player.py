@@ -7,10 +7,7 @@ from tinydb import TinyDB
 class Player:
 
     def __init__(self, PID: int, last_name: str, first_name: str, birthday: str, gender: str, rank: int):
-        """Initialization of last name, first name, date of birth,
-        
-        gender, national identification number and rank.
-        """
+        """Initialization of last name, first name, date of birth, gender, national identification number and rank."""
         self.last_name = last_name
         self.first_name = first_name
         self.birthday = birthday
@@ -44,8 +41,8 @@ class Player:
     def update_player_db(self, info, option):
         """Update player info (from user input) in database.
 
-        ARGS:
-            info: user input (str, or int inf "rank")
+        Args:
+            info: user input (str, or int inf "rank").
             option: update info category.
         """
         db = self.player_db
@@ -58,7 +55,7 @@ class Player:
     def load_player_db():
         """Load player database.
 
-        ARGS:
+        Args:
             return list of players.
         """
         players_db = TinyDB('database/players.json')

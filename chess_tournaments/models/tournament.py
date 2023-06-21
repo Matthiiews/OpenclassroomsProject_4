@@ -66,7 +66,7 @@ class Tournament:
     def merge_players(self, top_players, bottom_players):
         """Merge top and bottom players in order of matches.
 
-        ARGS:
+        Args:
             top_players: top half of players (list).
             bottom_players: bottom half of players (list).
         """
@@ -93,7 +93,7 @@ class Tournament:
     def update_timer(self, timer, info):
         """Update start or end timer of tournament.
 
-        ARGS:
+        Args:
             timer: date and time info (str).
             info: start or end time (str).
         """
@@ -104,7 +104,7 @@ class Tournament:
     def load_tournament_db():
         """Load tournament database.
 
-        ARGS:
+        Args:
             return: list of tournaments.
         """
         db = TinyDB('database/tournaments.json')

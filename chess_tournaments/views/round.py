@@ -30,7 +30,7 @@ class RoundViews:
     def display_matches(self, matches):
         """Display matches for current round as table.
 
-        ARGS:
+        Args:
             matches: list of matches tuples.
         """
         self.table.clear()
@@ -48,8 +48,8 @@ class RoundViews:
     def display_results(self, t):
         """Display results at the end of the tournament.
         
-        ARGS:
-            t: current tournament
+        Args:
+            t: current tournament.
         """
         self.table.clear()
         self.table.field_names = self.results_field_names
@@ -72,9 +72,9 @@ class RoundViews:
     def round_header(t, start_time):
         """Display tournament info as a round header.
 
-        ARGS:
-            t: current tournament
-            start_time: tournament start time (str)
+        Args:
+            t: current tournament.
+            start_time: tournament start time (str).
         """
         print("\n\n")
 

@@ -8,3 +8,4 @@ exclude=
     notes.txt,
     README.md,
     requirements.txt,
+    __pycache,

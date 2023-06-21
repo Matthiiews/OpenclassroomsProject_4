@@ -15,7 +15,7 @@ class ReportsController:
     def all_players_name(self, players):
         """Player report (sorted by last name).
 
-        ARGS:
+        Args:
             players: list of players.
         """
         players = sorted(players, key=lambda x: x.get('last_name'))
@@ -24,7 +24,7 @@ class ReportsController:
     def all_players_rank(self, players):
         """Player report (sorted by rank).
 
-        ARGS:
+        Args:
             players: list of players.
         """
         players = sorted(players, key=lambda x: x.get('rank'))
@@ -33,7 +33,7 @@ class ReportsController:
     def tournament_players(self):
         """Players in a tournament report select tournament to display players.
 
-        ARGS:
+        Args:
             return: player list of selected tournament.
         """
         user_input, tournaments = self.tournament_select()
@@ -74,7 +74,7 @@ class ReportsController:
     def tournament_select(self):
         """Load all tournaments for selection.
 
-        ARGS:
+        Args:
             return: user selection, list of all tournaments.
         """
         tournaments = Tournament.load_tournament_db()
