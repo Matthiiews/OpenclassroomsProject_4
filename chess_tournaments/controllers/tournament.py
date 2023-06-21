@@ -1,28 +1,25 @@
-""" Tournament Controller """
+"""Tournament Controller"""
 
-
-# Module Import
+#Module Import
 from datetime import datetime
-
 from chess_tournaments.models.player import Player
 from chess_tournaments.models.round import Round
-from chess_tournaments.models.match import Match
 from chess_tournaments.views.round import RoundViews
 from chess_tournaments.views.menu import MenuViews
 
 
 class TournamentController:
-
+    """Define a class Tournament Controller"""
     def __init__(self):
         self.menu_view = MenuViews()
         self.round_view = RoundViews()
-        
+
         self.timer = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def start_tournament(self, t):
-        """ Tournament (t) main structure
-        Start from first round or resume tournament according to round number
-        Set start and end timers and save to DB
+        """Tournament (t) main structure.
+        Start from first round or resume tournament according to round number.
+        Set start and end timers and save to DB.
         """
         if t.current_round == 1:
             t.start_date = self.timer
@@ -51,8 +48,8 @@ class TournamentController:
             self.tournament_end(t)
 
     def first_round(self, t):
-        """ First round : top players vs. bottom players
-        Get pairings and set round to save to DB """
+        """First round : top players vs. bottom players
+        Get pairings and set round to save to DB."""
         r = Round("Round 1", self.timer, "TBD")
         t.sort_players_by_rank()
         top_players, bottom_players = t.split_players()
@@ -80,8 +77,8 @@ class TournamentController:
             self.back_to_menu()
 
     def next_rounds(self, t):
-        """ Next rounds : set possible pairings
-        Get pairings and set round to save to DB """
+        """Next rounds : set possible pairings
+        Get pairings and set round to save to DB"""
         r = Round(("Round " + str(t.current_round)), self.timer, "TBD")
         t.sort_players_by_score()
         self.round_view.round_header(t, r.start_datetime)
@@ -125,13 +122,13 @@ class TournamentController:
             self.back_to_menu()
 
     def match_first_option(self, available_list, players_added, r):
-        """ Main pairing option
+        """Main pairing option.
 
-        Args:
-            available_list: list of players not set in match for current round
-            players_added: list of players already in match for current round
-            r: current round
-            return: updated lists
+        ARGS:
+            available_list: list of players not set in match for current round.
+            players_added: list of players already in match for current round.
+            r: current round.
+            return: updated lists.
         """
         r.get_match_pairing(available_list[0], available_list[1])
         available_list[0], available_list[1] = self.update_opponents(available_list[0], available_list[1])
@@ -146,13 +143,13 @@ class TournamentController:
         return available_list, players_added
 
     def match_other_option(self, available_list, players_added, r):
-        """ Alternative pairing option
+        """Alternative pairing option.
 
-        Args:
-            Available_list: list of players not set in match for current round
-            Players_added: list of players already in match for current round
-            r: current round
-            return: updated lists
+        ARGS:
+            available_list: list of players not set in match for current round.
+            players_added: list of players already in match for current round.
+            r: current round.
+            return: updated lists.
         """
         r.get_match_pairing(available_list[0], available_list[2])
         available_list[0], available_list[2] = self.update_opponents(available_list[0], available_list[2])
@@ -167,12 +164,12 @@ class TournamentController:
         return available_list, players_added
 
     def end_of_round(self, scores_list: list, t):
-        """ End of round : update player scores
+        """End of round : update player scores.
 
-        Args:
-            t: current tournament
-            Scores_list: list of scores
-            Players list with updated scores
+        ARGS:
+            t: current tournament.
+            scores_list: list of scores.
+            return: players list with updated scores.
         """
         for i in range(t.rounds_total):
             self.round_view.score_options(i + 1)
@@ -184,18 +181,18 @@ class TournamentController:
         return t.players
 
     def input_scores(self):
-        """ Score input """
+        """Score input."""
         self.round_view.score_input_prompt()
         response = input()
         return response
 
     def get_score(self, response, scores_list: list):
-        """ Input scores for each match in current round
+        """Input scores for each match in current round.
 
-        Args:
-            Response: user input (str)
-            Scores_list: list of scores
-            return: updated list of scores
+        ARGS:
+            response: user input (str).
+            scores_list: list of scores.
+            return: updated list of scores.
         """
         if response == "0":
             scores_list.extend([0.5, 0.5])
@@ -214,12 +211,12 @@ class TournamentController:
 
     @staticmethod
     def update_scores(players, scores_list: list):
-        """Update player scores
+        """Update player scores.
 
-        Args:
-            Players: list of players
-            Scores_list: list of scores
-            return: list of players with updated scores
+        ARGS:
+            players: list of players.
+            scores_list: list of scores.
+            return: list of players with updated scores.
         """
         for i in range(len(players)):
             players[i]["score"] += scores_list[i]
@@ -229,15 +226,15 @@ class TournamentController:
     @staticmethod
     def update_player_lists(player_1, player_2, available_list, players_added):
         """Update player lists :
-        Add unavailable player to respective list
-        Remove available player form respective list
+        Add unavailable player to respective list.
+        Remove available player form respective list.
 
-        Args:
-            Player_1: player 1 (dict)
-            Player_2: player 2 (dict)
-            Available_list: list of players not set in match for current round
-            Players_added: list of players already in match for current round
-            return: list of available players, list of unavailable players
+        ARGS:
+            player_1: player 1 (dict).
+            player_2: player 2 (dict).
+            available_list: list of players not set in match for current round.
+            players_added: list of players already in match for current round.
+            return: list of available players, list of unavailable players.
         """
         players_added.extend([player_1, player_2])
         available_list.remove(player_1)
@@ -253,11 +250,11 @@ class TournamentController:
         return player_1, player_2
 
     def tournament_end(self, t):
-        """End of tournament : display final results
-        Offer user to update ranks
+        """End of tournament : display final results.
+        Offer user to update ranks.
 
-        Args:
-            t: current tournament dict
+        ARGS:
+            t: current tournament dict.
         """
         t.sort_players_by_rank()
         t.sort_players_by_score()
@@ -277,10 +274,10 @@ class TournamentController:
                 self.update_ranks(players)
 
     def update_ranks(self, players):
-        """Update player ranks and save to DB
+        """Update player ranks and save to DB.
 
-        Args:
-            Players: tournament player list
+        ARGS:
+            players: tournament player list.
         """
         self.menu_view.select_players(players, "to update")
         self.menu_view.input_prompt()

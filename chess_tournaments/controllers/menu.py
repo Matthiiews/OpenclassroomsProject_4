@@ -1,7 +1,6 @@
-""" Menu Controller """
+"""Menu Controller"""
 
-
-# Module Import
+# Import Module
 from chess_tournaments.controllers.reports import ReportsController
 from chess_tournaments.controllers.tournament import TournamentController
 from chess_tournaments.models.player import Player
@@ -10,14 +9,15 @@ from chess_tournaments.views.menu import MenuViews
 
 
 class MenuController:
-    """ Define a class Menu Controller """
+    """Define a class Menu COntroller"""
     def __init__(self):
         self.menu_view = MenuViews()
         self.tour_cont = TournamentController()
         self.reports_cont = ReportsController()
 
     def main_menu_start(self):
-        """ Main menu selector : Redirects to respective submenus """
+        """Main menu selector :
+        Redirects to respective submenus."""
 
         self.menu_view.main_menu()
         self.menu_view.input_prompt()
@@ -52,7 +52,7 @@ class MenuController:
             self.main_menu_start()
 
     def new_tournament(self):
-        """ Create new tournament, serialize and save to DB """
+        """Create new tournament, serialize and save to DB."""
         self.menu_view.create_tournament_header()
         tournament_info = []
         options = [
@@ -79,7 +79,7 @@ class MenuController:
 
         if user_input == "y":
             tournament = Tournament(
-                t_id=0,
+                tournament_id=0,
                 name=tournament_info[0],
                 location=tournament_info[1],
                 start_date="Not started",
@@ -105,9 +105,10 @@ class MenuController:
             self.main_menu_start()
 
     def input_time_control(self):
-        """ Select time control for new tournament
+        """Select time control for new tournament.
 
-        @return: time control (str)
+        ARGS:
+            return: time control (str)
         """
         self.menu_view.time_control_options()
         self.menu_view.input_prompt()
@@ -126,10 +127,11 @@ class MenuController:
             self.input_time_control()
 
     def select_players(self, players_total):
-        """ Select players for new tournament
+        """Select players for new tournament.
 
-        @param players_total: number of players (int)
-        @return: list of selected players
+        ARGS:
+            players_total: number of players (int).
+            return: list of selected players.
         """
         players = Player.load_player_db()
         id_list = []
@@ -163,7 +165,7 @@ class MenuController:
         return tour_players
 
     def resume_tournament(self):
-        """ Select existing tournament to resume """
+        """Select existing tournament to resume."""
         tournament_list = Tournament.load_tournament_db()
 
         self.menu_view.select_tournament(tournament_list)
@@ -192,7 +194,7 @@ class MenuController:
                 self.tour_cont.start_tournament(t)
 
     def new_player(self):
-        """ Create new player, serialize and save to DB """
+        """Create new player, serialize and save to DB."""
         self.menu_view.create_new_player_header()
         player_info = []
         options = [
@@ -215,10 +217,10 @@ class MenuController:
 
         if user_input == "y":
             player = Player(
-                p_id=0,
                 last_name=player_info[0],
                 first_name=player_info[1],
                 birthday=player_info[2],
+                PID=0,
                 gender=player_info[3],
                 rank=int(player_info[4])
             )
@@ -231,7 +233,7 @@ class MenuController:
             self.main_menu_start()
 
     def update_player(self):
-        """ Update existing player info """
+        """Update existing player info."""
         players = Player.load_player_db()
 
         self.menu_view.select_players(players, "to update")
@@ -285,7 +287,7 @@ class MenuController:
             self.update_player()
 
     def reports_menu(self):
-        """ Reports menu selector """
+        """Reports menu selector."""
         self.menu_view.reports_menu()
         self.menu_view.input_prompt()
         user_input = input()
@@ -322,9 +324,10 @@ class MenuController:
             self.main_menu_start()
 
     def player_reports_sorting(self, players):
-        """ Select sorting option (name or rank) for players
+        """Select sorting option (name or rank) for players.
 
-        @param players: list of players
+        ARGS:
+            param players: list of players.
         """
         self.menu_view.reports_player_sorting()
         self.menu_view.input_prompt()

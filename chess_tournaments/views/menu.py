@@ -1,8 +1,9 @@
-""" Menu Views """
+"""Meun Views"""
 
 
 class MenuViews:
-    """ Define a class Menu Views """
+    """Define a class Menu Views."""
+
     def __init__(self):
         pass
 
@@ -32,14 +33,15 @@ class MenuViews:
         print("[1] Bullet")
         print("[2] Blitz")
         print("[3] Rapid")
-        print("\n[q] q to main menu")
+        print("\n[q] Back to main menu")
 
     @staticmethod
     def review_tournament(info, players):
-        """ Display all input info to review before saving to database
+        """Display all input info to review before saving to database.
 
-        @param info: input info list
-        @param players: list of selected players
+        ARGS:
+            info: input info list.
+            players: list of selected players.
         """
         print("\n\nNew tournament created :\n")
         print(f"{info[0].upper()}, {info[1].title()}", end=' | ')
@@ -67,10 +69,11 @@ class MenuViews:
 
     @staticmethod
     def select_players(players, player_number):
-        """ Display all players to select
+        """Display all players to select.
 
-        @param players: list of players
-        @param player_number: number of current player for new tournament (if editing player == "")
+        ARGS:
+            players: list of players.
+            player_number: number of current player for new tournament (if editing player == "").
         """
         print(f"\nSelect player {player_number} :\n")
         for i in range(len(players)):
@@ -79,13 +82,14 @@ class MenuViews:
             print(f"{players[i]['gender']} | {players[i]['date_of_birth']}", end=" | ")
             print(f"Rank : {players[i]['rank']}")
 
-        print("\n[q] q to main menu")
+        print("\n[q] Back to main menu")
 
     @staticmethod
     def select_tournament(tournaments):
-        """ Display all tournaments to select
+        """Display all tournaments to select.
 
-        @param tournaments: tournaments list
+        ARGS:
+            tournaments: tournaments list.
         """
         print("\n" * 3 + "--- SELECT TOURNAMENT ---\n")
 
@@ -98,7 +102,7 @@ class MenuViews:
             print(f"Ended on : {tournaments[i]['end_date']}", end=' | ')
             print(f"Round {tournaments[i]['current_round']-1}/{tournaments[i]['rounds_total']}")
 
-        print("\n[q] q to main menu")
+        print("\n[q] Back to main menu")
 
     @staticmethod
     def create_new_player_header():
@@ -106,9 +110,10 @@ class MenuViews:
 
     @staticmethod
     def review_player(info):
-        """ Display all input info to review before saving to database
+        """Display all input info to review before saving to database.
 
-        @param info: player info list
+        ARGS:
+            info: player info list.
         """
         print("\n\nNew player created :\n")
         print(f"{info[0]}, {info[1]}", end=' | ')
@@ -118,18 +123,19 @@ class MenuViews:
         print("\nSave to database ? [y/n] ", end='')
 
     @staticmethod
-    def update_player_info(p, options):
-        """ Player info editing prompts
+    def update_player_info(player, options):
+        """Player info editing prompts.
 
-        @param p: currently edited player
-        @param options: editable options
+        ARGS:
+            player: currently edited player
+            options: editable options
         """
         print("\n\n--- UPDATE PLAYER INFO ---\n")
-        print(f"Updating {p.last_name}, {p.first_name}\n")
+        print(f"Updating {player.last_name}, {player.first_name}\n")
         for i in range(len(options)):
             print(f"[{i+1}] Update {options[i]}")
 
-        print("\n[q] q to main menu")
+        print("\n[q] Back to main menu")
 
     @staticmethod
     def player_saved():
@@ -143,13 +149,13 @@ class MenuViews:
         print("[3] All tournaments")
         print("[4] Rounds in a tournament")
         print("[5] Matches in a tournament")
-        print("\n[q] q to main menu")
+        print("\n[q] Back to main menu")
 
     @staticmethod
     def reports_player_sorting():
         print("\n[1] Sort by name")
         print("[2] Sort by rank")
-        print("\n[q] q to main menu")
+        print("\n[q] Back to main menu")
 
     @staticmethod
     def input_prompt_text(option):

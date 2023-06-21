@@ -1,13 +1,13 @@
-""" Round Views """
+"""Round Views"""
 
-
-# Module Import 
+# Module Import
 from prettytable import PrettyTable
 
 
 class RoundViews:
-    """ Define a class for views related to round """
+    """Define a class Round Views."""
     def __init__(self):
+        """Initialization of the table."""
         self.table = PrettyTable()
         self.round_field_names = [
             "Match #",
@@ -28,10 +28,10 @@ class RoundViews:
         ]
 
     def display_matches(self, matches):
-        """ Display matches for current round as table
+        """Display matches for current round as table.
 
-        Args:
-            matches: list of matches tuples
+        ARGS:
+            matches: list of matches tuples.
         """
         self.table.clear()
         self.table.field_names = self.round_field_names
@@ -46,10 +46,10 @@ class RoundViews:
         print(self.table)
 
     def display_results(self, t):
-        """ Display results at the end of the tournament
-
-        Args:
-            t (object): current tournament object
+        """Display results at the end of the tournament.
+        
+        ARGS:
+            t: current tournament
         """
         self.table.clear()
         self.table.field_names = self.results_field_names
@@ -70,11 +70,11 @@ class RoundViews:
 
     @staticmethod
     def round_header(t, start_time):
-        """ Display tournament info as a round header
+        """Display tournament info as a round header.
 
-        Args
-            t (object): Current tournament object
-            start_time(str): tournament start time 
+        ARGS:
+            t: current tournament
+            start_time: tournament start time (str)
         """
         print("\n\n")
 
@@ -89,7 +89,7 @@ class RoundViews:
     @staticmethod
     def round_over():
         print("\nRound over ? [ok]")
-        print("q to main menu ? [q]")
+        print("Back to main menu ? [q]")
 
     @staticmethod
     def score_options(match_number):
@@ -97,7 +97,7 @@ class RoundViews:
         print('[0] Draw')
         print('[1] Player 1 wins')
         print('[2] Player 2 wins')
-        print("\n[q] q to main menu")
+        print("\n[q] Back to main menu")
 
     @staticmethod
     def score_input_prompt():

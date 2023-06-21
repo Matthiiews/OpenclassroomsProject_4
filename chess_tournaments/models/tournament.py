@@ -1,15 +1,14 @@
-""" Tournament Models """
+"""Tournament Models"""
 
-
-# Module Import
+# Module import
 from tinydb import TinyDB
 
 
 class Tournament:
-    """ Define a class Tournament Models """
+    """Define a class Tournament Models."""
     def __init__(
             self,
-            t_id: int,
+            tournament_id: int,
             name: str,
             location: str,
             start_date: str,
@@ -21,7 +20,7 @@ class Tournament:
             rounds: list,
             rounds_total=4
     ):
-        self.t_id = t_id
+        self.tournament_id = tournament_id
         self.name = name
         self.location = location
         self.start_date = start_date
@@ -36,9 +35,9 @@ class Tournament:
         self.tour_db = TinyDB('database/tournaments.json')
 
     def serialize_tournament(self):
-        """ Return serialized tournament info """
+        """Return serialized tournament info."""
         return {
-            "id": self.t_id,
+            "id": self.tournament_id,
             "name": self.name,
             "location": self.location,
             "start_date": self.start_date,
@@ -52,23 +51,24 @@ class Tournament:
         }
 
     def sort_players_by_rank(self):
-        """ Sort players by rank (ascending) """
+        """Sort players by rank (ascending)."""
         self.players = sorted(self.players, key=lambda x: x.get('rank'))
 
     def sort_players_by_score(self):
-        """ Sort players by score (descending) """
+        """Sort players by score (descending)."""
         self.players = sorted(self.players, key=lambda x: x.get('score'), reverse=True)
 
     def split_players(self):
-        """ Split player in 2 halves (top and bottom players) """
+        """Split player in 2 halves (top and bottom players)."""
         half = len(self.players) // 2
         return self.players[:half], self.players[half:]
 
     def merge_players(self, top_players, bottom_players):
-        """ Merge top and bottom players in order of matches
+        """Merge top and bottom players in order of matches.
 
-        @param top_players: top half of players (list)
-        @param bottom_players: bottom half of players (list)
+        ARGS:
+            top_players: top half of players (list).
+            bottom_players: bottom half of players (list).
         """
         merged_players = []
         for i in range(len(self.players) // 2):
@@ -78,34 +78,34 @@ class Tournament:
         self.players = merged_players
 
     def save_tournament_db(self):
-        """ Save new tournament to database
-        Set tournament ID as document ID
-        """
+        """Save new tournament to database set tournament ID as document ID."""
         db = self.tour_db
-        self.t_id = db.insert(self.serialize_tournament())
-        db.update({'id': self.t_id}, doc_ids=[self.t_id])
+        self.tournament_id = db.insert(self.serialize_tournament())
+        db.update({'id': self.tournament_id}, doc_ids=[self.tournament_id])
 
     def update_tournament_db(self):
-        """ Update tournament info (after each round) in database """
+        """Update tournament info (after each round) in database."""
         db = self.tour_db
-        db.update({'rounds': self.rounds}, doc_ids=[self.t_id])
-        db.update({'players': self.players}, doc_ids=[self.t_id])
-        db.update({'current_round': self.current_round}, doc_ids=[self.t_id])
+        db.update({'rounds': self.rounds}, doc_ids=[self.tournament_id])
+        db.update({'players': self.players}, doc_ids=[self.tournament_id])
+        db.update({'current_round': self.current_round}, doc_ids=[self.tournament_id])
 
     def update_timer(self, timer, info):
-        """ Update start or end timer of tournament
+        """Update start or end timer of tournament.
 
-        @param timer: date and time info (str)
-        @param info: start or end time (str)
+        ARGS:
+            timer: date and time info (str).
+            info: start or end time (str).
         """
         db = self.tour_db
-        db.update({info: timer}, doc_ids=[self.t_id])
+        db.update({info: timer}, doc_ids=[self.tournament_id])
 
     @staticmethod
     def load_tournament_db():
-        """ Load tournament database
+        """Load tournament database.
 
-        @return: list of tournaments
+        ARGS:
+            return: list of tournaments.
         """
         db = TinyDB('database/tournaments.json')
         db.all()

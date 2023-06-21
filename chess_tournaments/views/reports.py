@@ -1,14 +1,13 @@
-""" Reports Views """
-
+"""Reports Views"""
 
 # Module Import
 from prettytable import PrettyTable
 
 
 class Reports:
-    """ Define a class Reports Views """
+    """Define a class Menu Views."""
     def __init__(self):
-        """ Initilazation of the table """
+        """Initialization of the table."""
         self.table = PrettyTable()
         self.player_report_field_names = [
             "ID",
@@ -49,7 +48,7 @@ class Reports:
         ]
 
     def display_players(self, players, sorting):
-        """ Display player report (all sorting types) """
+        """Display player report (all sorting types)."""
         self.table.clear()
         self.table.field_names = self.player_report_field_names
         self.table.align = "l"
@@ -68,7 +67,7 @@ class Reports:
         print(self.table)
 
     def display_tournaments_report(self, tournaments):
-        """ Display tournament reports """
+        """Display tournament reports."""
         self.table.clear()
         self.table.field_names = self.tournament_report_field_names
         self.table.align = "l"
@@ -96,7 +95,7 @@ class Reports:
         print(self.table)
 
     def display_matches_report(self, matches):
-        """ Display matches in tournament report """
+        """Display matches in tournament report."""
         self.table.clear()
         self.table.field_names = self.matches_report_field_names
         self.table.align = "l"
@@ -109,7 +108,7 @@ class Reports:
         print(self.table)
 
     def display_rounds_report(self, rounds):
-        """ Display rounds in tournament report """
+        """Display rounds in tournament report."""
         self.table.clear()
         self.table.field_names = self.rounds_report_field_names
         self.table.align = "l"
@@ -136,9 +135,10 @@ class Reports:
 
     @staticmethod
     def report_header(info):
-        """ Header for tournament reports
+        """Header for tournament reports.
 
-        @param info: tournament (dict)
+        ARGS:
+            info: tournament (dict).
         """
         print("\n\n")
 
