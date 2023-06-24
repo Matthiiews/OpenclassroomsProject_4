@@ -1,9 +1,9 @@
-"""Round Models"""
+# Round Models
 
 class Round:
     """Define Round Models."""
     def __init__(self, round_name: str, start_datetime: str, end_datetime: str):
-        """Initialize the round with the provided round name start datetime, and end datetime."""
+        """Initialization of the round with the provided round name, start datetime, and end datetime."""
         self.round_name = round_name
         self.start_datetime = start_datetime
         self.end_datetime = end_datetime
@@ -19,7 +19,7 @@ class Round:
         ]
 
     def get_match_pairing(self, player_1, player_2):
-        """Set the match paring as a tuple."""
+        """Set the match pairing as a tuple."""
         match = (
             f"{player_1['last_name']}, {player_1['first_name']}",
             player_1["rank"],

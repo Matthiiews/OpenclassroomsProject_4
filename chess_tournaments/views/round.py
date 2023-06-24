@@ -1,11 +1,12 @@
 """Round Views"""
 
+
 # Module Import
 from prettytable import PrettyTable
 
 
 class RoundViews:
-    """Define a class Round Views."""
+    """Define a class RoundViews."""
     def __init__(self):
         """Initialization of the table."""
         self.table = PrettyTable()
@@ -28,43 +29,42 @@ class RoundViews:
         ]
 
     def display_matches(self, matches):
-        """Display matches for current round as table.
+        """Display matches for the current round as a table.
 
         Args:
-            matches: list of matches tuples.
+            matches: list of match tuples.
         """
         self.table.clear()
         self.table.field_names = self.round_field_names
 
-        for i in range(len(matches)):
-            row = list(matches[i])
+        for i, match in enumerate(matches):
+            row = list(match)
             row.insert(0, str(i+1))
             row.insert(4, "vs.")
-
             self.table.add_row(row)
 
         print(self.table)
 
     def display_results(self, t):
         """Display results at the end of the tournament.
-        
+
         Args:
             t: current tournament.
         """
         self.table.clear()
         self.table.field_names = self.results_field_names
 
-        for i in range(len(t.players)):
+        for i, player in enumerate(t.players):
             self.table.add_row([
                 i+1,
-                t.players[i]["last_name"] + ", " + t.players[i]["first_name"],
-                t.players[i]["score"],
-                t.players[i]["rank"]
+                f"{player['last_name']}, {player['first_name']}",
+                player['score'],
+                player['rank']
             ])
 
         print("\n\n- FINAL SCORES -\n")
-        print(f"{t.name.upper()}, {t.location.title()} | Description : {t.description}")
-        print(f"Start : {t.start_date} | End : {t.end_date} | Time control : {t.time_control}\n")
+        print(f"{t.name.upper()}, {t.location.title()} | Description: {t.description}")
+        print(f"Start: {t.start_date} | End: {t.end_date} | Time control: {t.time_control}\n")
 
         print(self.table)
 
@@ -78,8 +78,8 @@ class RoundViews:
         """
         print("\n\n")
 
-        h_1 = f"{t.name.upper()}, {t.location.title()} | Description : {t.description}"
-        h_2 = f"Start date and time : {t.start_date} | Time control : {t.time_control}\n"
+        h_1 = f"{t.name.upper()}, {t.location.title()} | Description: {t.description}"
+        h_2 = f"Start date and time: {t.start_date} | Time control: {t.time_control}\n"
         h_3 = f"- ROUND {t.current_round}/{t.rounds_total} | {start_time} -"
 
         print(h_1.center(100, " "))
@@ -88,17 +88,17 @@ class RoundViews:
 
     @staticmethod
     def round_over():
-        print("\nRound over ? [ok]")
-        print("Back to main menu ? [q]")
+        print("\nRound over? [ok]")
+        print("Back to the main menu? [q]")
 
     @staticmethod
     def score_options(match_number):
-        print("\nMatch ", match_number)
-        print('[0] Draw')
-        print('[1] Player 1 wins')
-        print('[2] Player 2 wins')
-        print("\n[q] Back to main menu")
+        print("\nMatch", match_number)
+        print("[0] Draw")
+        print("[1] Player 1 wins")
+        print("[2] Player 2 wins")
+        print("\n[q] Back to the main menu")
 
     @staticmethod
     def score_input_prompt():
-        print('\nEnter result :', end=' ')
+        print("\nEnter result:", end=' ')
