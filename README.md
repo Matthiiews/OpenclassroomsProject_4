@@ -80,6 +80,7 @@ _Dernier rapport exporté :_
 <div id='id-section2-1'></div>
 
 #### 2.1 Menu Principal
+![main_menu](img/main_menu.png)
 1. Créer un nouveau tournoi
 2. Reprendre tournoi existant
 3. Créer un nouveau joueur
@@ -98,3 +99,17 @@ _Dernier rapport exporté :_
 3. Tous les tournois
 4. Toutes les rondes d'un tournoi
 5. Tous les matchs d'un tournoi
+#### 2.3 Menu des rapports
+![main_menu](img/reports_menu.png)
+
+<div id='id-section3'></div>
+
+## 3. Exemples d'affichage
+#### Matchs d'une ronde :
+![round](img/round_example.png)
+
+#### Rapport des joueurs :
+![player_report](img/players_report.png)
+
+#### Rapport des rondes :
+![round_report](img/rounds_report.png)
