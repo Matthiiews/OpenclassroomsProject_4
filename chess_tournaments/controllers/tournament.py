@@ -13,53 +13,51 @@ class TournamentController:
     def __init__(self):
         self.menu_view = MenuViews()
         self.round_view = RoundViews()
-
         self.timer = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    def start_tournament(self, t):
-        """Tournament (t) main structure.
+    def start_tournament(self, tournament):
+        """Tournament (tournament) main structure.
         Start from first round or resume tournament according to round number.
         Set start and end timers and save to DB.
         """
-        if t.current_round == 1:
-            t.start_date = self.timer
-            t.update_timer(t.start_date, 'start_date')
+        if tournament.current_round == 1:
+            tournament.start_date = self.timer
+            tournament.update_timer(tournament.start_date, 'start_date')
+            self.first_round(tournament)
+            tournament.current_round += 1
+            tournament.update_tournament_db()
 
-            self.first_round(t)
-            t.current_round += 1
-            t.update_tournament_db()
+            while tournament.current_round <= tournament.rounds_total:
+                self.next_rounds(tournament)
+                tournament.current_round += 1
+                tournament.update_tournament_db()
 
-            while t.current_round <= t.rounds_total:
-                self.next_rounds(t)
-                t.current_round += 1
-                t.update_tournament_db()
+        elif 1 < tournament.current_round <= tournament.rounds_total:
+            while tournament.current_round <= tournament.rounds_total:
+                self.next_rounds(tournament)
+                tournament.current_round += 1
+                tournament.update_tournament_db()
 
-        elif 1 < t.current_round <= t.rounds_total:
-            while t.current_round <= t.rounds_total:
-                self.next_rounds(t)
-                t.current_round += 1
-                t.update_tournament_db()
+            tournament.end_date = self.timer
+            tournament.update_timer(tournament.end_date, 'end_date')
+            self.tournament_end(tournament)
 
-            t.end_date = self.timer
-            t.update_timer(t.end_date, 'end_date')
-            self.tournament_end(t)
+        elif tournament.current_round > tournament.rounds_total:
+            self.tournament_end(tournament)
 
-        elif t.current_round > t.rounds_total:
-            self.tournament_end(t)
-
-    def first_round(self, t):
+    def first_round(self, tournament):
         """First round : top players vs. bottom players
         Get pairings and set round to save to DB."""
-        r = Round("Round 1", self.timer, "TBD")
-        t.sort_players_by_rank()
-        top_players, bottom_players = t.split_players()
-        self.round_view.round_header(t, r.start_datetime)
+        round = Round("Round 1", self.timer, "TBD")
+        tournament.sort_players_by_rank()
+        top_players, bottom_players = tournament.split_players()
+        self.round_view.round_header(tournament, round.start_datetime)
 
-        for i in range(t.rounds_total):
-            r.get_match_pairing(top_players[i], bottom_players[i])
+        for i in range(tournament.rounds_total):
+            round.get_match_pairing(top_players[i], bottom_players[i])
             top_players[i], bottom_players[i] = self.update_opponents(top_players[i], bottom_players[i])
 
-        self.round_view.display_matches(r.matches)
+        self.round_view.display_matches(round.matches)
 
         self.round_view.round_over()
         self.menu_view.input_prompt()
@@ -67,46 +65,43 @@ class TournamentController:
         scores_list = []
 
         if user_input == "ok":
-            r.end_datetime = self.timer
-            t.rounds.append(r.set_round())
-            t.merge_players(top_players, bottom_players)
+            round.end_datetime = self.timer
+            tournament.rounds.append(round.set_round())
+            tournament.merge_players(top_players, bottom_players)
 
-            self.end_of_round(scores_list, t)
+            self.end_of_round(scores_list, tournament)
 
         elif user_input == "q":
             self.back_to_menu()
 
-    def next_rounds(self, t):
+    def next_rounds(self, tournament):
         """Next rounds : set possible pairings
         Get pairings and set round to save to DB"""
-        r = Round(("Round " + str(t.current_round)), self.timer, "TBD")
-        t.sort_players_by_score()
-        self.round_view.round_header(t, r.start_datetime)
+        round = Round(("Round " + str(tournament.current_round)), self.timer, "TBD")
+        tournament.sort_players_by_score()
+        self.round_view.round_header(tournament, round.start_datetime)
 
-        available_list = t.players
+        available_list = tournament.players
         players_added = []
 
         k = 0
-        while k < t.rounds_total:
+        while k < tournament.rounds_total:
             if available_list[1]["id"] in available_list[0]["opponents"]:
                 try:
-                    available_list, players_added = \
-                        self.match_other_option(available_list, players_added, r)
-                    t.players = players_added
+                    available_list, players_added = self.match_other_option(available_list, players_added, round)
+                    tournament.players = players_added
 
                 except IndexError:
-                    available_list, players_added = \
-                        self.match_first_option(available_list, players_added, r)
-                    t.players = players_added
+                    available_list, players_added = self.match_first_option(available_list, players_added, round)
+                    tournament.players = players_added
 
             elif available_list[1]["id"] not in available_list[0]["opponents"]:
-                available_list, players_added = \
-                    self.match_first_option(available_list, players_added, r)
-                t.players = players_added
+                available_list, players_added = self.match_first_option(available_list, players_added, round)
+                tournament.players = players_added
 
             k += 1
 
-        self.round_view.display_matches(r.matches)
+        self.round_view.display_matches(round.matches)
 
         self.round_view.round_over()
         self.menu_view.input_prompt()
@@ -114,46 +109,43 @@ class TournamentController:
         scores_list = []
 
         if user_input == "ok":
-            r.end_datetime = self.timer
-            t.rounds.append(r.set_round())
-            self.end_of_round(scores_list, t)
+            round.end_datetime = self.timer
+            tournament.rounds.append(round.set_round())
+            self.end_of_round(scores_list, tournament)
 
         elif user_input == "q":
             self.back_to_menu()
 
-    def match_first_option(self, available_list, players_added, r):
+    def match_first_option(self, available_list, players_added, round):
         """Main pairing option.
 
         Args:
             available_list: list of players not set in match for current round.
             players_added: list of players already in match for current round.
-            r: current round.
+            round: current round.
             return: updated lists.
         """
-        r.get_match_pairing(available_list[0], available_list[1])
+        round.get_match_pairing(available_list[0], available_list[1])
         available_list[0], available_list[1] = self.update_opponents(available_list[0], available_list[1])
-
         available_list, players_added = self.update_player_lists(
             available_list[0],
             available_list[1],
             available_list,
             players_added
         )
-
         return available_list, players_added
 
-    def match_other_option(self, available_list, players_added, r):
+    def match_other_option(self, available_list, players_added, round):
         """Alternative pairing option.
 
         Args:
             available_list: list of players not set in match for current round.
             players_added: list of players already in match for current round.
-            r: current round.
+            round: current round.
             return: updated lists.
         """
-        r.get_match_pairing(available_list[0], available_list[2])
+        round.get_match_pairing(available_list[0], available_list[2])
         available_list[0], available_list[2] = self.update_opponents(available_list[0], available_list[2])
-
         available_list, players_added = self.update_player_lists(
             available_list[0],
             available_list[2],
@@ -163,22 +155,22 @@ class TournamentController:
 
         return available_list, players_added
 
-    def end_of_round(self, scores_list: list, t):
+    def end_of_round(self, scores_list: list, tournament):
         """End of round : update player scores.
 
         Args:
-            t: current tournament.
+            tournament: current tournament.
             scores_list: list of scores.
             return: players list with updated scores.
         """
-        for i in range(t.rounds_total):
+        for i in range(tournament.rounds_total):
             self.round_view.score_options(i + 1)
             response = self.input_scores()
             scores_list = self.get_score(response, scores_list)
 
-        t.players = self.update_scores(t.players, scores_list)
+        tournament.players = self.update_scores(tournament.players, scores_list)
 
-        return t.players
+        return tournament.players
 
     def input_scores(self):
         """Score input."""
@@ -249,22 +241,22 @@ class TournamentController:
 
         return player_1, player_2
 
-    def tournament_end(self, t):
+    def tournament_end(self, tournament):
         """End of tournament : display final results.
         Offer user to update ranks.
 
         Args:
-            t: current tournament dict.
+            tournament: current tournament dict.
         """
-        t.sort_players_by_rank()
-        t.sort_players_by_score()
+        tournament.sort_players_by_rank()
+        tournament.sort_players_by_score()
 
-        self.round_view.display_results(t)
+        self.round_view.display_results(tournament)
 
         self.menu_view.update_rank()
         user_input = input()
 
-        players = t.players
+        players = tournament.players
 
         if user_input == "n":
             self.back_to_menu()

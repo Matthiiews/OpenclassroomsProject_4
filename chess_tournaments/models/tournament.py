@@ -108,9 +108,5 @@ class Tournament:
             return: list of tournaments.
         """
         db = TinyDB('database/tournaments.json')
-        db.all()
-        tournaments_list = []
-        for item in db:
-            tournaments_list.append(item)
-
+        tournaments_list = db.all()
         return tournaments_list

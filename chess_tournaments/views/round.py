@@ -45,16 +45,16 @@ class RoundViews:
 
         print(self.table)
 
-    def display_results(self, t):
+    def display_results(self, tournamen):
         """Display results at the end of the tournament.
 
         Args:
-            t: current tournament.
+            tournamen: current tournament.
         """
         self.table.clear()
         self.table.field_names = self.results_field_names
 
-        for i, player in enumerate(t.players):
+        for i, player in enumerate(tournamen.players):
             self.table.add_row([
                 i+1,
                 f"{player['last_name']}, {player['first_name']}",
@@ -63,24 +63,24 @@ class RoundViews:
             ])
 
         print("\n\n- FINAL SCORES -\n")
-        print(f"{t.name.upper()}, {t.location.title()} | Description: {t.description}")
-        print(f"Start: {t.start_date} | End: {t.end_date} | Time control: {t.time_control}\n")
+        print(f"{tournamen.name.upper()}, {tournamen.location.title()} | Description: {tournamen.description}")
+        print(f"Start: {tournamen.start_date} | End: {tournamen.end_date} | Time control: {tournamen.time_control}\n")
 
         print(self.table)
 
     @staticmethod
-    def round_header(t, start_time):
+    def round_header(tournament, start_time):
         """Display tournament info as a round header.
 
         Args:
-            t: current tournament.
+            tournament: current tournament.
             start_time: tournament start time (str).
         """
         print("\n\n")
 
-        h_1 = f"{t.name.upper()}, {t.location.title()} | Description: {t.description}"
-        h_2 = f"Start date and time: {t.start_date} | Time control: {t.time_control}\n"
-        h_3 = f"- ROUND {t.current_round}/{t.rounds_total} | {start_time} -"
+        h_1 = f"{tournament.name.upper()}, {tournament.location.title()} | Description: {tournament.description}"
+        h_2 = f"Start date and time: {tournament.start_date} | Time control: {tournament.time_control}\n"
+        h_3 = f"- ROUND {tournament.current_round}/{tournament.rounds_total} | {start_time} -"
 
         print(h_1.center(100, " "))
         print(h_2.center(100, " "))

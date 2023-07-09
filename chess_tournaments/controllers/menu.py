@@ -9,7 +9,7 @@ from chess_tournaments.views.menu import MenuViews
 
 
 class MenuController:
-    """Define a class Menu COntroller"""
+    """Define a class Menu Controller"""
     def __init__(self):
         self.menu_view = MenuViews()
         self.tour_cont = TournamentController()

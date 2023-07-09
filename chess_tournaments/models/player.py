@@ -59,9 +59,5 @@ class Player:
             return list of players.
         """
         players_db = TinyDB('database/players.json')
-        players_db.all()
-        players = []
-        for item in players_db:
-            players.append(item)
-
+        players = players_db.all()
         return players
