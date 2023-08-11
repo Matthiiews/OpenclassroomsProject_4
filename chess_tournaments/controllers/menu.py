@@ -199,7 +199,7 @@ class MenuController:
 
         last_name = self.menu_view.input_name("last")
         first_name = self.menu_view.input_name("first")
-        birthday = self.menu_view.input_birthday()
+        birthday = self.menu_view.input_birthday("birthday", Player.validate_birthday)
         gender = self.menu_view.input_with_validation(
                 "gender [M/F/O]", lambda gender: gender.upper() in ['M', 'F', 'O'])
         rank = self.menu_view.input_rank()

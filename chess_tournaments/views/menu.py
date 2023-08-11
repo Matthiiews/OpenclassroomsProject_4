@@ -240,22 +240,22 @@ class MenuViews:
             else:
                 print("Invalid input. Please enter a valid rank.")
 
-    def input_birthday(self):
+    def input_birthday(self, label, validation_func):
         """Input player birthday.
         
         returns:
             birthday: The date of birthday.
         """
         while True:
-            birthday = input("Enter birthday (dd/mm/yyyy) (type [q] for main menu) : ")
-            if birthday.lower() == "q":
+            user_input = input("Enter birthday (dd/mm/yyyy) (type [q] for main menu) : ")
+            if user_input.lower() == "q":
                 self.back_to_menu()
-            try:
-                self.validate_birthday_format(birthday)
-                self.validate_birthday(birthday)
-                return birthday
-            except ValueError as e:
-                print(str(e))
+            else:
+                try:
+                    validation_func(user_input)
+                    return user_input
+                except ValueError as ve:
+                    print(ve)
 
     def back_to_menu(self):
         from chess_tournaments.controllers.menu import MenuController
