@@ -45,16 +45,16 @@ class RoundViews:
 
         print(self.table)
 
-    def display_results(self, tournamen):
+    def display_results(self, tournament):
         """Display results at the end of the tournament.
 
         Args:
-            tournamen: current tournament.
+            tournament: current tournament.
         """
         self.table.clear()
         self.table.field_names = self.results_field_names
 
-        for i, player in enumerate(tournamen.players):
+        for i, player in enumerate(tournament.players):
             self.table.add_row([
                 i+1,
                 f"{player['last_name']}, {player['first_name']}",
@@ -63,8 +63,9 @@ class RoundViews:
             ])
 
         print("\n\n- FINAL SCORES -\n")
-        print(f"{tournamen.name.upper()}, {tournamen.location.title()} | Description: {tournamen.description}")
-        print(f"Start: {tournamen.start_date} | End: {tournamen.end_date} | Time control: {tournamen.time_control}\n")
+        print(f"{tournament.name.upper()}, {tournament.location.title()} | Description: {tournament.description}")
+        print(
+            f"Start: {tournament.start_date} | End: {tournament.end_date} | Time control: {tournament.time_control}\n")
 
         print(self.table)
 

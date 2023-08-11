@@ -196,41 +196,49 @@ class MenuController:
     def new_player(self):
         """Create new player, serialize and save to DB."""
         self.menu_view.create_new_player_header()
-        player_info = []
-        options = [
-            "last name",
-            "first name",
-            "date of birth (dd/mm/yyyy)",
-            "gender [M/F/O]",
-            "rank"
-        ]
-        for item in options:
-            self.menu_view.input_prompt_text(item)
-            user_input = input()
-            if user_input == "q":
-                self.main_menu_start()
-            else:
-                player_info.append(user_input)
 
+        last_name = self.menu_view.input_name("last")
+        first_name = self.menu_view.input_name("first")
+        birthday = self.menu_view.input_birthday()
+        gender = self.menu_view.input_with_validation(
+                "gender [M/F/O]", lambda gender: gender.upper() in ['M', 'F', 'O'])
+        rank = self.menu_view.input_rank()
+
+        try:
+            player = Player(None, last_name, first_name, birthday, gender, int(rank)).create_player()
+            print(f"Player {player.first_name} {player.last_name} created successfully!")
+            
+        except ValueError as ve:
+            print(f"Error creating player: {str(ve)}")
+
+        player_info = [
+            last_name,
+            first_name,
+            birthday,
+            gender,
+            str(rank)
+        ]
+        
         MenuViews.review_player(player_info)
         user_input = input().lower()
 
         if user_input == "y":
-            player = Player(
-                last_name=player_info[0],
-                first_name=player_info[1],
-                birthday=player_info[2],
-                PID=0,
-                gender=player_info[3],
-                rank=int(player_info[4])
+            new_player = Player(
+                last_name=last_name,
+                first_name=first_name,
+                birthday=birthday,
+                PID=None,
+                gender=gender,
+                rank=int(rank)
             )
 
-            player.save_player_db()
+            new_player.save_player_db()
             self.menu_view.player_saved()
-            self.main_menu_start()
+        
+        else:
+            print("Player not saved")
 
-        elif user_input == "n":
-            self.main_menu_start()
+        self.main_menu_start()
 
     def update_player(self):
         """Update existing player info."""

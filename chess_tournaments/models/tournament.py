@@ -32,7 +32,7 @@ class Tournament:
         self.players = players
         self.rounds = rounds
 
-        self.tour_db = TinyDB('database/tournaments.json')
+        self.tournament_db = TinyDB('database/tournaments.json')
 
     def serialize_tournament(self):
         """Return serialized tournament info."""
@@ -79,13 +79,14 @@ class Tournament:
 
     def save_tournament_db(self):
         """Save new tournament to database set tournament ID as document ID."""
-        db = self.tour_db
-        self.tournament_id = db.insert(self.serialize_tournament())
-        db.update({'id': self.tournament_id}, doc_ids=[self.tournament_id])
+        db = self.tournament_db
+        tournament_info = self.serialize_tournament()
+        self.tournament_id = db.insert(tournament_info)
+        db.update(tournament_info, doc_ids=[self.tournament_id])
 
     def update_tournament_db(self):
         """Update tournament info (after each round) in database."""
-        db = self.tour_db
+        db = self.tournament_db
         db.update({'rounds': self.rounds}, doc_ids=[self.tournament_id])
         db.update({'players': self.players}, doc_ids=[self.tournament_id])
         db.update({'current_round': self.current_round}, doc_ids=[self.tournament_id])
@@ -97,16 +98,16 @@ class Tournament:
             timer: date and time info (str).
             info: start or end time (str).
         """
-        db = self.tour_db
+        db = self.tournament_db
         db.update({info: timer}, doc_ids=[self.tournament_id])
 
-    @staticmethod
     def load_tournament_db():
         """Load tournament database.
 
-        Args:
-            return: list of tournaments.
+        Returns:
+            list of tournaments.
         """
         db = TinyDB('database/tournaments.json')
         tournaments_list = db.all()
         return tournaments_list
+
