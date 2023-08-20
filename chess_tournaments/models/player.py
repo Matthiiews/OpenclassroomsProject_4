@@ -106,4 +106,3 @@ class Player:
         if rank < 1 or rank > 100:
             raise ValueError("The rank must be between 1 and 100.")
         return True
-        
