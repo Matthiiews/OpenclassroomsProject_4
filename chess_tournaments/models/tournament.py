@@ -110,4 +110,3 @@ class Tournament:
         db = TinyDB('database/tournaments.json')
         tournaments_list = db.all()
         return tournaments_list
-

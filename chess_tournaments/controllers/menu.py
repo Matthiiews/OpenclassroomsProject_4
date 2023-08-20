@@ -196,18 +196,20 @@ class MenuController:
     def new_player(self):
         """Create new player, serialize and save to DB."""
         self.menu_view.create_new_player_header()
-
-        last_name = self.menu_view.input_name("last")
-        first_name = self.menu_view.input_name("first")
-        birthday = self.menu_view.input_birthday("birthday", Player.validate_birthday)
+        last_name = self.menu_view.input_with_validation("Last name:", Player.validate_name)
+        first_name = self.menu_view.input_with_validation("First name:", Player.validate_name)
+        birthday = self.menu_view.input_with_validation("Date of Birth (dd/mm/yyyy):", Player.validate_birthday)
         gender = self.menu_view.input_with_validation(
-                "gender [M/F/O]", lambda gender: gender.upper() in ['M', 'F', 'O'])
-        rank = self.menu_view.input_rank()
+            "gender [M/F/O]:", Player.validate_gender)
+        rank = self.menu_view.input_with_validation("Rank :", Player.validate_rank)
+        # birthday = self.menu_view.input_birthday("Birth day (dd/mm/yyyy):", Player.validate_birthday)
+        # gender = self.menu_view.input_with_validation(
+        # "gender [M/F/O]", lambda gender: gender.upper() in ['M', 'F', 'O'], Player.validate_gender)
 
+        # rank = self.menu_view.input_rank()
         try:
             player = Player(None, last_name, first_name, birthday, gender, int(rank)).create_player()
             print(f"Player {player.first_name} {player.last_name} created successfully!")
-            
         except ValueError as ve:
             print(f"Error creating player: {str(ve)}")
 
@@ -218,23 +220,22 @@ class MenuController:
             gender,
             str(rank)
         ]
-        
+
         MenuViews.review_player(player_info)
         user_input = input().lower()
 
         if user_input == "y":
             new_player = Player(
+                PID=None,
                 last_name=last_name,
                 first_name=first_name,
                 birthday=birthday,
-                PID=None,
                 gender=gender,
                 rank=int(rank)
             )
 
             new_player.save_player_db()
             self.menu_view.player_saved()
-        
         else:
             print("Player not saved")
 
@@ -243,15 +244,15 @@ class MenuController:
     def update_player(self):
         """Update existing player info."""
         players = Player.load_player_db()
-
         self.menu_view.select_players(players, "to update")
         self.menu_view.input_prompt()
         user_input = input()
 
         if user_input == "q":
             self.main_menu_start()
+        elif user_input.isdigit():
+            p = players[int(user_input) - 1]
 
-        p = players[int(user_input) - 1]
         p = Player(
             p['id'],
             p['last_name'],
@@ -262,11 +263,11 @@ class MenuController:
         )
 
         options = [
-            "last name",
-            "first name",
-            "date of birth",
-            "gender",
-            "rank"
+            "Last name",
+            "First name",
+            "Date of Birth",
+            "Gender",
+            "Rank"
         ]
         self.menu_view.update_player_info(p, options)
         self.menu_view.input_prompt()
@@ -276,10 +277,29 @@ class MenuController:
             self.main_menu_start()
 
         elif int(user_input) <= len(options):
-            updated_info = (options[int(user_input) - 1]).replace(" ", "_")
-            self.menu_view.input_prompt_text(
-                f"new {options[int(user_input) - 1]}")
-            user_input = input()
+            optSelected = int(user_input)
+            updated_info = (options[int(user_input) - 1].lower()).replace(" ", "_")
+            #   self.menu_view.input_prompt_text(
+            #   f"new {options[int(user_input) - 1]}")
+            #   user_input = input()
+            if optSelected == 1:
+                user_input = self.menu_view.input_with_validation(
+                    f"new {options[int(user_input) - 1]}", Player.validate_name)
+            elif optSelected == 2:
+                user_input = self.menu_view.input_with_validation(
+                    f"new {options[int(user_input) - 1]}", Player.validate_name)
+            elif optSelected == 3:
+                user_input = self.menu_view.input_with_validation(
+                    f"new {options[int(user_input) - 1]} (dd/mm/yyyy):", Player.validate_birthday)
+            elif optSelected == 4:
+                user_input = self.menu_view.input_with_validation(
+                    f"new {options[int(user_input) - 1]} [M/F/O]:", Player.validate_gender)
+            elif optSelected == 5:
+                user_input = self.menu_view.input_with_validation(
+                    f"new {options[int(user_input) - 1]}", Player.validate_rank)
+            else:
+                print("Invalid option value, you're going to be redirected to the menu!")
+                user_input = "q"
 
             if user_input == "q":
                 self.main_menu_start()

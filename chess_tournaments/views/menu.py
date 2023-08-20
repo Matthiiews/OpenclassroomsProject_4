@@ -191,7 +191,7 @@ class MenuViews:
 
     def input_with_validation(self, prompt, validation_func):
         """Input with validation.
-        
+
         Args:
             prompt: prompt to display.
             validation_func: function to validate the input.
@@ -200,75 +200,24 @@ class MenuViews:
         while True:
             self.input_prompt_text(prompt)
             user_input = input()
-            if validation_func(user_input):
+            if user_input.lower() == "q":
+                self.back_to_menu(self)
+            elif validation_func(user_input):
                 return user_input
             else:
-                self.input_error()
-    
+                print("Input value was invalid!")
+                user_input = None
+
+    @staticmethod
+    def back_to_menu(self):
+        from chess_tournaments.controllers.menu import MenuController
+        MenuController().main_menu_start()
+
     def input_name(self, name_type):
         """Input name (last or first).
-        
+
         Args:
             name_type: last or first.
             return: validated name.
         """
         return self.input_with_validation(f"{name_type} name", self.validate_name)
-    
-    @staticmethod
-    def validate_name(name):
-        """Validate name (no digits).
-
-        Args:
-            name: name string to validate.
-            return: True if the name contains only letters, False otherwise.
-        """
-        return name.isalpha()
-    
-    def input_rank(self):
-        """Input player rank.
-
-        Returns:
-            rank: The rank of the player.
-        """
-        while True:
-            rank_input = input("Enter rank (type [q] for main menu) : ")
-            if rank_input.lower() == "q":
-                self.back_to_menu()
-
-            if rank_input.isdigit():
-                return int(rank_input)
-            else:
-                print("Invalid input. Please enter a valid rank.")
-
-    def input_birthday(self, label, validation_func):
-        """Input player birthday.
-        
-        returns:
-            birthday: The date of birthday.
-        """
-        while True:
-            user_input = input("Enter birthday (dd/mm/yyyy) (type [q] for main menu) : ")
-            if user_input.lower() == "q":
-                self.back_to_menu()
-            else:
-                try:
-                    validation_func(user_input)
-                    return user_input
-                except ValueError as ve:
-                    print(ve)
-
-    def back_to_menu(self):
-        from chess_tournaments.controllers.menu import MenuController
-        MenuController().main_menu_start()
-
-    @staticmethod
-    def validate_birthday_format(birthday):
-        parts = birthday.split('/')
-        if len(parts) != 3 or not all(part.isdigit() for part in parts):
-            raise ValueError("Invalid date format. Please use dd/mm/yyyy format.")
-
-
-
-
-
-
