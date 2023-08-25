@@ -202,11 +202,6 @@ class MenuController:
         gender = self.menu_view.input_with_validation(
             "gender [M/F/O]:", Player.validate_gender)
         rank = self.menu_view.input_with_validation("Rank :", Player.validate_rank)
-        # birthday = self.menu_view.input_birthday("Birth day (dd/mm/yyyy):", Player.validate_birthday)
-        # gender = self.menu_view.input_with_validation(
-        # "gender [M/F/O]", lambda gender: gender.upper() in ['M', 'F', 'O'], Player.validate_gender)
-
-        # rank = self.menu_view.input_rank()
         try:
             player = Player(None, last_name, first_name, birthday, gender, int(rank)).create_player()
             print(f"Player {player.first_name} {player.last_name} created successfully!")
@@ -279,9 +274,6 @@ class MenuController:
         elif int(user_input) <= len(options):
             optSelected = int(user_input)
             updated_info = (options[int(user_input) - 1].lower()).replace(" ", "_")
-            #   self.menu_view.input_prompt_text(
-            #   f"new {options[int(user_input) - 1]}")
-            #   user_input = input()
             if optSelected == 1:
                 user_input = self.menu_view.input_with_validation(
                     f"new {options[int(user_input) - 1]}", Player.validate_name)
